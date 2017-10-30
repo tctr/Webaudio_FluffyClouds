@@ -191,14 +191,14 @@ function mouseClicked() {
       beatingsineWA2.playmodulate(0.1,3);
 
       playingonmouseClicked = true;
-      backgroundColor = color(0,255,255);
+      //backgroundColor = color(0,255,255);
     } else {
 
       //beatingsineWA1.stop();
       //beatingsineWA2.stop();
 
       playingonmouseClicked = false;
-      backgroundColor = color(255,0,255);
+      //backgroundColor = color(255,0,255);
     }
 //  }
 }
@@ -217,6 +217,13 @@ function shape() {
   };
 
   this.display = function() {
+    if (mouseIsPressed) {
+      fill(100,0,255,1);
+    }
+    else {
+      fill(255,0,200,1);
+    }
+    noStroke();
     ellipse(this.x, this.y, this.diameter, this.diameter);
   }
 }
@@ -225,6 +232,7 @@ function shape() {
 
 function draw() {
 
+  // this ellipse is created at the mouse positions
   size  += 10;
   if (mouseIsPressed) {
     fill(100,0,255,1);
@@ -232,10 +240,10 @@ function draw() {
   else {
     fill(255,0,200,0.5);
   }
-
   noStroke();
   ellipse(mouseX+random(-20,20),mouseY+random(-20,20),random(50,150),random(50,150));
 
+  // other ellipses are created at automatically 
   shape1.move(); shape1.display();
   shape2.move(); shape2.display();
   shape3.move(); shape3.display();
