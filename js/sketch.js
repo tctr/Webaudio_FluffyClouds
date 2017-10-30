@@ -1,36 +1,35 @@
 
 
-
-function beatingsine(fosc1a,fosc1b,fosc2a,fosc2b,fosc3a,fosc3b) {
-
-  this.osc1a = new p5.Oscillator(); this.osc1a.setType('sine'); this.freq1a = fosc1a; this.osc1a.freq(this.fosc1a); this.osc1a.amp(0); this.osc1a.start();
-  this.osc1b = new p5.Oscillator(); this.osc1b.setType('sine'); this.fosc1b = fosc1b; this.osc1b.freq(this.fosc1b); this.osc1b.amp(0); this.osc1b.start();
-
-  this.osc2a = new p5.Oscillator(); this.osc2a.setType('sine'); this.fosc2a = fosc2a; this.osc2a.freq(this.fosc2a); this.osc2a.amp(0); this.osc2a.start();
-  this.osc2b = new p5.Oscillator(); this.osc2b.setType('sine'); this.fosc2b = fosc2b; this.osc2b.freq(this.fosc2b); this.osc2b.amp(0); this.osc2b.start();
-
-  this.osc3a = new p5.Oscillator(); this.osc3a.setType('sine'); this.fosc3a = fosc3a; this.osc3a.freq(this.fosc3a); this.osc3a.amp(0); this.osc3a.start();
-  this.osc3b = new p5.Oscillator(); this.osc3b.setType('sine'); this.fosc3b = fosc3b; this.osc3b.freq(this.fosc3b); this.osc3b.amp(0); this.osc3b.start();
-
-  this.modulator = new p5.Oscillator('triangle');
-  this.modulator.disconnect();  // disconnect the modulator from master output
-  this.modulator.freq(10);
-  this.modulator.amp(1);
-  this.modulator.start();
-
-  this.play = function(amp,timetoreach) {
-    this.osc1a.amp(amp,timetoreach); this.osc1b.amp(amp,timetoreach);
-    this.osc2a.amp(amp,timetoreach); this.osc2b.amp(amp,timetoreach);
-    this.osc3a.amp(amp,timetoreach); this.osc3b.amp(amp,timetoreach);
-  }
-
-  this.playmodulate = function() {
-    console.log(this.modulator.scale(-1,1,1,-1));
-    this.osc1.amp(this.modulator.scale(-1,1,1,-1));
-    this.osc2.amp(this.modulator.scale(-1,1,1,-1));
-  }
-
-}
+// // DEPRECATED :  P5 Sound Library
+// function beatingsine(fosc1a,fosc1b,fosc2a,fosc2b,fosc3a,fosc3b) {
+//
+//   this.osc1a = new p5.Oscillator(); this.osc1a.setType('sine'); this.freq1a = fosc1a; this.osc1a.freq(this.fosc1a); this.osc1a.amp(0); this.osc1a.start();
+//   this.osc1b = new p5.Oscillator(); this.osc1b.setType('sine'); this.fosc1b = fosc1b; this.osc1b.freq(this.fosc1b); this.osc1b.amp(0); this.osc1b.start();
+//
+//   this.osc2a = new p5.Oscillator(); this.osc2a.setType('sine'); this.fosc2a = fosc2a; this.osc2a.freq(this.fosc2a); this.osc2a.amp(0); this.osc2a.start();
+//   this.osc2b = new p5.Oscillator(); this.osc2b.setType('sine'); this.fosc2b = fosc2b; this.osc2b.freq(this.fosc2b); this.osc2b.amp(0); this.osc2b.start();
+//
+//   this.osc3a = new p5.Oscillator(); this.osc3a.setType('sine'); this.fosc3a = fosc3a; this.osc3a.freq(this.fosc3a); this.osc3a.amp(0); this.osc3a.start();
+//   this.osc3b = new p5.Oscillator(); this.osc3b.setType('sine'); this.fosc3b = fosc3b; this.osc3b.freq(this.fosc3b); this.osc3b.amp(0); this.osc3b.start();
+//
+//   this.modulator = new p5.Oscillator('triangle');
+//   this.modulator.disconnect();  // disconnect the modulator from master output
+//   this.modulator.freq(10);
+//   this.modulator.amp(1);
+//   this.modulator.start();
+//
+//   this.play = function(amp,timetoreach) {
+//     this.osc1a.amp(amp,timetoreach); this.osc1b.amp(amp,timetoreach);
+//     this.osc2a.amp(amp,timetoreach); this.osc2b.amp(amp,timetoreach);
+//     this.osc3a.amp(amp,timetoreach); this.osc3b.amp(amp,timetoreach);
+//   }
+//
+//   this.playmodulate = function() {
+//     console.log(this.modulator.scale(-1,1,1,-1));
+//     this.osc1.amp(this.modulator.scale(-1,1,1,-1));
+//     this.osc2.amp(this.modulator.scale(-1,1,1,-1));
+//   }
+// }
 
 
 
@@ -107,19 +106,18 @@ const reverb = new Reverb({
 	url: "audio/impulses/water.wav"
 })
 
-//masterGain.connect(reverb.input )
-//reverb.output.connect(audioContext.destination)
+masterGain.connect(reverb.input )
+reverb.output.connect(audioContext.destination)
 
 
 
 //sound variables
-var pulse;
 var playing = false;
 var playingonmouseClicked = false;
 var isthatyou;
 var beatingsineWA1;
 var beatingsineWA2;
-var noise;
+//var noise;
 
 
 
@@ -186,8 +184,6 @@ function mouseClicked() {
     if (!playingonmouseClicked) {
       //isthatyou.setVolume(1.0);
       //isthatyou.play();
-      //beatingsine1.play(0.5,0.05);
-      //beatingsine2.play(0.5,0.05);
 
       //beatingsineWA1.play(0.1);
       //beatingsineWA2.play(0.1);
@@ -197,11 +193,9 @@ function mouseClicked() {
       playingonmouseClicked = true;
       backgroundColor = color(0,255,255);
     } else {
-      //beatingsine1.play(0,0.5);
-      //beatingsine2.play(0,0.5);
 
-      beatingsineWA1.stop();
-      beatingsineWA2.stop();
+      //beatingsineWA1.stop();
+      //beatingsineWA2.stop();
 
       playingonmouseClicked = false;
       backgroundColor = color(255,0,255);
@@ -231,31 +225,21 @@ function shape() {
 
 function draw() {
 
-//background(backgroundColor)
-//text('click to play', width/2, height/2);
+  size  += 10;
+  if (mouseIsPressed) {
+    fill(100,0,255,1);
+  }
+  else {
+    fill(255,0,200,0.5);
+  }
 
+  noStroke();
+  ellipse(mouseX+random(-20,20),mouseY+random(-20,20),random(50,150),random(50,150));
 
-size  += 10;
-    if (mouseIsPressed) {
-        fill(100,0,255,1);
-        //nostroke();
-    }
-    else {
-        fill(255,0,200,0.5);
-        //nostroke();
-    }
+  shape1.move(); shape1.display();
+  shape2.move(); shape2.display();
+  shape3.move(); shape3.display();
+  shape4.move(); shape4.display();
+  shape5.move(); shape5.display();
 
-    //if size==80 {size=50;}else{size +=1}
-    noStroke();
-    ellipse(mouseX+random(-20,20),mouseY+random(-20,20),random(50,150),random(50,150));
-
-    shape1.move(); shape1.display();
-    shape2.move(); shape2.display();
-    shape3.move(); shape3.display();
-    shape4.move(); shape4.display();
-    shape5.move(); shape5.display();
-
-//    noFill();
-//stroke(0, 200, 0);
-//bezier(85, 20, 10, 10, 90, 90, 15, 80);
 }
