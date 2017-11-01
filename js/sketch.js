@@ -95,19 +95,21 @@ class BeatingSineWA {
 const audioContext = new AudioContext();
 
 
-
 //setup a master gain
 const masterGain = audioContext.createGain();
 //masterGain.connect( analyser );
 masterGain.connect( audioContext.destination );
 
-const reverb = new Reverb({
-	audioContext,
-	url: "audio/impulses/water.wav"
-})
 
-masterGain.connect(reverb.input )
-reverb.output.connect(audioContext.destination)
+
+
+// // create a reverb
+// const reverb = new Reverb({
+// 	audioContext,
+// 	//url: "audio/impulses/water.wav"
+// 	//url: "audio/impulses/space_2.wav"
+// 	url: "audio/impulses/default.wav"
+// })
 
 
 
@@ -117,6 +119,25 @@ var playingonmouseClicked = false;
 var isthatyou;
 var beatingsineWA1;
 var beatingsineWA2;
+
+
+
+var SoundSamples = function() {
+  loadSounds(this, {
+  isthatyou: 'audio/isthatyou.mp3'
+  //other: 'snare.wav',
+  //hihat: 'hihat.wav'
+  });
+};
+
+SoundSamples.prototype.play = function() {
+  // We'll start playing the rhythm 100 milliseconds from "now"
+  var startTime = audioContext.currentTime + 0.100;
+  playSound(this.isthatyou, startTime);
+};
+
+var samples = new SoundSamples();
+
 //var noise;
 
 
@@ -124,55 +145,71 @@ var beatingsineWA2;
 
 function setup() {
 
+    // still P5 sound lib
+    //soundFormats('mp3');
+    //isthatyou = loadSound('audio/isthatyou.mp3');
+
   //backgroundColor = color(255,0,255);
   textAlign(CENTER);
 
-    createCanvas(window.innerWidth,window.innerHeight);
-    size = 50;
-    shape1 = new shape();
-    shape2 = new shape();
-    shape3 = new shape();
-    shape4 = new shape();
-    shape5 = new shape();
-    //console.log(size);
-    //blendMode(DODGE);
-
-    beatingsineWA1 = new BeatingSineWA({AudioContext: audioContext, freq1: 330, freq2: 330.2, freq3: 440, freq4: 440.33, freq5: 587, freq6: 587.25});
-    beatingsineWA2 = new BeatingSineWA({AudioContext: audioContext, freq1: 200, freq2: 200.2, freq3: 266, freq4: 266.3, freq5: 350, freq6: 350.25});
-    beatingsineWA1.output.connect(masterGain);
-    beatingsineWA2.output.connect(masterGain);
+  createCanvas(window.innerWidth,window.innerHeight);
+  size = 50;
+  shape1 = new shape();
+  shape2 = new shape();
+  shape3 = new shape();
+  shape4 = new shape();
+  shape5 = new shape();
+  //console.log(size);
+  //blendMode(DODGE);
+  //sound setup
 
 
-    // // LFO : THIS WORKS
-    // //connect carrier to a filter then lfo is used to modulate the filter frequency
-    // var carrier = audioContext.createOscillator();
-    // carrier.type = "square";  carrier.start(0); //carrier.frequency.value = 10;
-    // var lfo = audioContext.createOscillator();
-    // lfo.type = "sine"; lfo.frequency.value = 10; lfo.start(0);
-    // var filter = audioContext.createBiquadFilter();
-    // filter.type = 'lowpass';
-    // var gain = audioContext.createGain(); gain.gain.value = 500;
-    // carrier.connect(filter);
-    // lfo.connect(gain);
-    // gain.connect(filter.frequency);
-    // filter.connect(audioContext.destination);
 
-    // // LFO : THIS WORKS
-    // //connect carrier to a gain then lfo is used to modulate the gain value
-    // var carrier = audioContext.createOscillator();
-    // carrier.type = "sine";  carrier.start(0); //carrier.frequency.value = 10;
-    // var lfo = audioContext.createOscillator();
-    // lfo.type = "sine"; lfo.frequency.value = 10; lfo.start(0);
-    // var gain = audioContext.createGain(); //gain.gain.value = 0.5;
-    // carrier.connect(gain);
-    // lfo.connect(gain.gain);
-    // gain.connect(audioContext.destination);
+  beatingsineWA1 = new BeatingSineWA({AudioContext: audioContext, freq1: 330, freq2: 330.2, freq3: 440, freq4: 440.33, freq5: 587, freq6: 587.25});
+  beatingsineWA2 = new BeatingSineWA({AudioContext: audioContext, freq1: 200, freq2: 200.2, freq3: 266, freq4: 266.3, freq5: 350, freq6: 350.25});
 
 
-    //noise = new p5.Noise(type);
-    //noise.setType('white');
-    //noise.start();
-    //noise.amp(0.5);
+  // // when calling the reverb
+  // masterGain.connect(reverb.input );
+  // beatingsineWA1.output.connect(reverb);
+  // beatingsineWA2.output.connect(reverb);
+  // reverb.output.connect(audioContext.destination);
+
+  // connecting without the reverb
+  beatingsineWA1.output.connect(masterGain);
+  beatingsineWA2.output.connect(masterGain);
+  masterGain.connect(audioContext.destination);
+
+
+  // // LFO : THIS WORKS
+  // //connect carrier to a filter then lfo is used to modulate the filter frequency
+  // var carrier = audioContext.createOscillator();
+  // carrier.type = "square";  carrier.start(0); //carrier.frequency.value = 10;
+  // var lfo = audioContext.createOscillator();
+  // lfo.type = "sine"; lfo.frequency.value = 10; lfo.start(0);
+  // var filter = audioContext.createBiquadFilter();
+  // filter.type = 'lowpass';
+  // var gain = audioContext.createGain(); gain.gain.value = 500;
+  // carrier.connect(filter);
+  // lfo.connect(gain);
+  // gain.connect(filter.frequency);
+  // filter.connect(audioContext.destination);
+
+  // // LFO : THIS WORKS
+  // //connect carrier to a gain then lfo is used to modulate the gain value
+  // var carrier = audioContext.createOscillator();
+  // carrier.type = "sine";  carrier.start(0); //carrier.frequency.value = 10;
+  // var lfo = audioContext.createOscillator();
+  // lfo.type = "sine"; lfo.frequency.value = 10; lfo.start(0);
+  // var gain = audioContext.createGain(); //gain.gain.value = 0.5;
+  // carrier.connect(gain);
+  // lfo.connect(gain.gain);
+  // gain.connect(audioContext.destination);
+
+  //noise = new p5.Noise(type);
+  //noise.setType('white');
+  //noise.start();
+  //noise.amp(0.5);
 
 }
 
@@ -185,20 +222,29 @@ function mouseClicked() {
       //isthatyou.setVolume(1.0);
       //isthatyou.play();
 
+
       //beatingsineWA1.play(0.1);
       //beatingsineWA2.play(0.1);
       beatingsineWA1.playmodulate(0.1,3);
       beatingsineWA2.playmodulate(0.1,3);
 
+      //playSound(samples.isthatyou, 0);
+
+      //samples.prototype.play();
+      //playSound(samples.isthatyou, startTime);
+
+      var source = audioContext.createBufferSource();
+      source.connect(audioContext.destination);
+      source.buffer = samples.isthatyou;
+      source.start(audioContext.currentTime + 0.100);
+
       playingonmouseClicked = true;
-      //backgroundColor = color(0,255,255);
     } else {
 
       //beatingsineWA1.stop();
       //beatingsineWA2.stop();
 
       playingonmouseClicked = false;
-      //backgroundColor = color(255,0,255);
     }
 //  }
 }
@@ -238,12 +284,12 @@ function draw() {
     fill(100,0,255,1);
   }
   else {
-    fill(255,0,200,0.5);
+    fill(255,0,200,0.8);
   }
   noStroke();
   ellipse(mouseX+random(-20,20),mouseY+random(-20,20),random(50,150),random(50,150));
 
-  // other ellipses are created at automatically 
+  // other ellipses are created at automatically
   shape1.move(); shape1.display();
   shape2.move(); shape2.display();
   shape3.move(); shape3.display();
